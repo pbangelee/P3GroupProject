@@ -33,8 +33,6 @@ for ws in myWorkbook.worksheets:
     max_row = ws.max_row
     ws.auto_filter.ref = f"A1:D{max_row}"
 
-    
-
 # Additionally, each sheet should have some simple summary information about each class using functions in columns F (the titles) and G (the data). It should show:
 # The highest grade, The lowest grade, The mean grade, The median grade, The number of students in the class
 
@@ -62,18 +60,20 @@ for ws in myWorkbook.worksheets:
 # Some simple formatting (bolding headers) and changing the width of the columns.
 # The width of the columns for A,B,C,D,F,G must each be set to the number of characters in the header + 5. 
 
-    column_letters = ["A", "B", "C", "D"]
+    column_letters = ["A", "B", "C", "D", "F", "G"]
 
-# Loop through columns A–D
-    for i in range(4): 
+# Loop through columns A–D formatting width
+    for i in range(6): 
         col_letter = column_letters[i]
         header_text = ws[f"{col_letter}1"].value 
         if header_text:
             ws.column_dimensions[col_letter].width = len(header_text) + 5
 
+# Bolding the headers
     for cell in ws[1]:
         cell.font = bold_font
 
+myWorkbook.remove(myWorkbook["Grades"])
 
-myWorkbook.save(filename="FixedSheet.xlsx")
+myWorkbook.save(filename="formatted_grades.xlsx")
 myWorkbook.close()
