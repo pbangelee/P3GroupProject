@@ -21,6 +21,11 @@ for row in currWs.iter_rows(min_row=2, values_only=True, min_col=1, max_col=3):
         myWorkbook.active = myWorkbook["Grades"]
         currWs = myWorkbook.active
 
+for row in currWs.iter_rows(min_row=2, values_only=True, min_col=1, max_col=3):
+    studentInfo = row[1].split("_")
+    studentInfo.append(row[2])
+    myWorkbook.active = myWorkbook[row[0]]
+    myWorkbook.active.append(studentInfo)
 
 # Create new worksheets for each class (e.g., a sheet for Algebra, a sheet for Calculus, etc.)
 
