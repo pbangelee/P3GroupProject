@@ -7,10 +7,11 @@ from openpyxl.styles import Font
 
 myWorkbook = openpyxl.load_workbook("Poorly_Organized_Data_1.xlsx")
 
-sheet = myWorkbook.active
+currWs = myWorkbook.active
 
-print(sheet.values)
-
+for row in currWs.iter_rows(min_row=2, values_only=True, min_col=1, max_col=3):
+    if row[0] not in myWorkbook.sheetnames:
+        myWorkbook.create_sheet(row[0])
 
 # Create new worksheets for each class (e.g., a sheet for Algebra, a sheet for Calculus, etc.)
 
@@ -46,3 +47,5 @@ print(sheet.values)
 
 
 
+myWorkbook.save(filename="FixedSheet.xlsx")
+myWorkbook.close()
