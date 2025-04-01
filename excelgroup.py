@@ -3,7 +3,7 @@
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
-
+bold_font = Font(bold=True)  # Bold font
 
 myWorkbook = openpyxl.load_workbook("Poorly_Organized_Data_1.xlsx")
 
@@ -29,36 +29,50 @@ for row in currWs.iter_rows(min_row=2, values_only=True, min_col=1, max_col=3):
 
 # Create new worksheets for each class (e.g., a sheet for Algebra, a sheet for Calculus, etc.)
 
-#currWs = myWork
-#myWorksheet.create_sheet.title("Alegebra")
-#myWorksheet.create_sheet("Calculus")
-#myWorksheet.create_sheet("Stats")
-#myWorksheet.create_sheet("Geometry")
-#myWorksheet.create_sheet("Trigonometry")
+for ws in myWorkbook.worksheets:
+    max_row = ws.max_row
+    ws.auto_filter.ref = f"A1:D{max_row}"
 
+    
 
-
-
-# In each sheet, create columns for last name, first name, student ID, and grade with the student data for that class placed there.
-
-#currWs["A12"] = "Lastt Name"
-
-#currWs[] = "First Name"
-
-#currWs[] = "Student ID"
-
-#currWs[] = "Grade"
-
-# A filter should be placed over the 4 aforementioned columns in each sheet.
 # Additionally, each sheet should have some simple summary information about each class using functions in columns F (the titles) and G (the data). It should show:
 # The highest grade, The lowest grade, The mean grade, The median grade, The number of students in the class
+
+    ws["F1"] = "Summary Statistics"
+    ws["G1"] = "Value"
+    ws.column_dimensions["F"].width = len(ws["F1"].value) + 5
+    ws.column_dimensions["G"].width = len(ws["G1"].value) + 5
+
+
+    ws["F2"] = "Highest Grade"
+    ws["G2"] = f"=MAX(D2:D{max_row})"
+
+    ws["F3"] = "Lowest Grade"
+    ws["G3"] = f"=MIN(D2:D{max_row})"
+    
+    ws["F4"] = "Mean Grade"
+    ws["G4"] = f"=AVERAGE(D2:D{max_row})"
+    
+    ws["F5"] = "Median Grade"
+    ws["G5"] = f"=MEDIAN(D2:D{max_row})"
+
+    ws["F6"] = "Number of Students"
+    ws["G6"] = f"=COUNT(D2:D{max_row})"
+
 # Some simple formatting (bolding headers) and changing the width of the columns.
 # The width of the columns for A,B,C,D,F,G must each be set to the number of characters in the header + 5. 
-# For example the column D header is “Grade” which has 5 characters, so the width of column D should be 10, etc.
-# Save the results as a new Excel file named “formatted_grades.xlsx”
 
+    column_letters = ["A", "B", "C", "D"]
 
+# Loop through columns A–D
+    for i in range(4): 
+        col_letter = column_letters[i]
+        header_text = ws[f"{col_letter}1"].value 
+        if header_text:
+            ws.column_dimensions[col_letter].width = len(header_text) + 5
 
+    for cell in ws[1]:
+        cell.font = bold_font
 
 
 myWorkbook.save(filename="FixedSheet.xlsx")
