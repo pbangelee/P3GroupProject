@@ -12,6 +12,15 @@ currWs = myWorkbook.active
 for row in currWs.iter_rows(min_row=2, values_only=True, min_col=1, max_col=3):
     if row[0] not in myWorkbook.sheetnames:
         myWorkbook.create_sheet(row[0])
+        myWorkbook.active = myWorkbook[str(row[0])]
+        currWs = myWorkbook.active
+        currWs["A1"] = "Last Name"
+        currWs["B1"] = "First Name"
+        currWs["C1"] = "Student ID"
+        currWs["D1"] = "Grade"
+        myWorkbook.active = myWorkbook["Grades"]
+        currWs = myWorkbook.active
+
 
 # Create new worksheets for each class (e.g., a sheet for Algebra, a sheet for Calculus, etc.)
 
